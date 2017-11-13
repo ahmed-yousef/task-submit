@@ -510,7 +510,7 @@ def submit():
 
 @app.route('/face')
 def face_auth():
-    url='https://www.facebook.com/v2.11/dialog/oauth?client_id=144059996221344&redirect_uri=http://127.0.0.1:8080/facecallback&auth_type=rerequest&scope=email'
+    url='https://www.facebook.com/v2.11/dialog/oauth?client_id=144059996221344&redirect_uri=https://assignment-submit.herokuapp.com/facecallback&auth_type=rerequest&scope=email'
     return redirect(url)
 
 @app.route('/facecallback')
