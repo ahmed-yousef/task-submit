@@ -525,6 +525,7 @@ def face_call():
        'code':auth_resp['code']}
         req=requests.get(url,params=params)
         data=json.loads(req.text)
+        print(data)
         print('access token ',data["access_token"],' time ',data["expires_in"],'/n')
         url='https://graph.facebook.com/v2.11/me?fields=name,email&access_token='+data["access_token"]
         req=requests.get(url)
