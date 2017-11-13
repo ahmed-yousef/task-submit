@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<title>Control</title>
+
+<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='style_log.css')}}">
+<script src="{{url_for('static',filename='jquery-3.2.1.min.js')}}"></script>
+<script src="{{url_for('static',filename='bootstrap.min.js')}}"></script>
+<script src="{{url_for('static',filename='script.js')}}"></script>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
+    <script type="text/javascript">
+
+    // The Browser API key obtained from the Google API Console.
+    // Replace with your own Browser API key, or your own key.
+	var res;
+	function excute(){
+    var developerKey = 'AIzaSyBNuK3A5NABdnUSGlswwjSZmGpOCTX567w';
+
+    // The Client ID obtained from the Google API Console. Replace with your own Client ID.
+    var clientId = "488824850553-stl3fokfb17ja5dhnepibidaqqltp91l.apps.googleusercontent.com"
+
+    // Replace with your own project number from console.developers.google.com.
+    // See "Project number" under "IAM & Admin" > "Settings"
+    var appId = "488824850553";
+
+    // Scope to use to access user's Drive items.
+    var scope = ['https://www.googleapis.com/auth/drive'];
+
+    var pickerApiLoaded = false;
+    var oauthToken="{{access}}";
+
+    // Use the Google API Loader script to load the google.picker script.
+    function loadPicker() {
+      gapi.load('picker', {'callback': onPickerApiLoad});
+    }
+
+
+    function onPickerApiLoad() {
+      pickerApiLoaded = true;
+      createPicker();
+    }
+
+    // Create and render a Picker object for searching images.
+    function createPicker() {
+      if (/*pickerApiLoaded && */oauthToken) {
+        var view = new google.picker.DocsView()
+          .setIncludeFolders(true) 
+          //.setMimeTypes('application/vnd.google-apps.folder')
+          .setSelectFolderEnabled(true);
+        var picker = new google.picker.PickerBuilder()
+            .enableFeature(google.picker.Feature.NAV_HIDDEN)
+            //.enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+            .setAppId(appId)
+			.setTitle("Selcet Folder to display its content")
+			.setSelectableMimeTypes('application/vnd.google-apps.folder')
+            .setOAuthToken(oauthToken)
+			.setMaxItems(0)
+			.setOrigin(window.location.protocol + '//' + window.location.host)
+            .addView(view)
+            .addView(new google.picker.DocsUploadView())
+            .setDeveloperKey(developerKey)
+            .setCallback(pickerCallback)
+            .build();
+         picker.setVisible(true);
+		 $("#files").html("")
+      }
+    }
+
+    // A simple callback implementation.
+    function pickerCallback(data) {
+		console.log(data)
+      if (data.action == google.picker.Action.PICKED) {
+        var fileId = data.docs[0].id;
+		var url="https://www.googleapis.com/drive/v3/files";
+		var q="'"+fileId.toString()+"' in parents";
+		var query={"q":q,"key":developerKey,"access_token":oauthToken};
+		$.get(url,query,function( datas ){
+		console.log(datas);
+		res=datas;
+		$("#num").html("number of folders: "+res['files'].length);
+		for(var i=0;i<res['files'].length;i++){
+		html="<option>"+res['files'][i].name+"</option>"
+		$(html).appendTo("#files");
+		}
+		});
+      }
+    }if(oauthToken != "0"){
+	loadPicker()
+	}else{
+		alert("please click AUTH CLOUD")
+	}
+	}
+    </script>
+
+</head>
+<body>
+<div id="main"class="container">
+	<h1>Welcome {{user_name}},</h1>
+	<h3>last login {{last_login}}.</h3>
+	<p class="text">{{message}}</p>
+	<a href="{{url_for('auth')}}"><button class="btn btn-info">AUTH CLOUD and create folder<span class="glyphicon glyphicon-cloud"></span></button></a>
+	<a href="{{url_for('clear_credentials')}}"><button class="btn btn-danger">clear AUTH CLOUD <span class="glyphicon glyphicon-trash"></span></button></a>
+	<a href="{{url_for('logout')}}"><button class="btn btn-warning">Logout <span class="glyphicon glyphicon-off"></span></button></a>
+	<br><br>
+	<form class="form-horizontal " action="{{url_for('update')}}" method="POST">
+	<label class="control-label col-sm-2" for="user">Old Pass:</label>
+    <div id="ctrl" class="form-group">
+      <div class="col-sm-10 input-group">
+        <input type="password" class="form-control" id="old" placeholder="Enter old password" name="old" required="required">
+      </div>
+    </div>
+  <label class="control-label col-sm-2" for="user">New User:</label>
+    <div id="ctrl" class="form-group">
+      <div class="col-sm-10 input-group">
+        <input type="text" class="form-control" id="user" placeholder="Enter new user name" name="user" required="required">
+      </div>
+    </div>
+	<label class="control-label col-sm-2" for="pass">New Pass:</label>
+    <div id="ctrl" class="form-group">
+      <div class="col-sm-10 input-group"> 
+        <input type="password" class="form-control" id="pass" placeholder="Enter new password" name="pass" required="required">
+      </div>
+    </div>
+    <div id="ctrl" class="form-group">        
+      <div class="col-sm-offset-1 col-sm-10">
+        <button type="submit" class="btn btn-primary ">Update</button><br><br>
+      </div>
+    </div>
+  </form>
+  <button class="btn btn-info" onclick="excute()">Open File Picker</button>
+  <span id="num"></span>
+	<br><br>
+	<select id="files" style="width:100%;height:170px" multiple="true"></select>
+	<br><br>
+</div>
+<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
+</body>
+</html>

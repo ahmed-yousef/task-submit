@@ -1,0 +1,17 @@
+<table class="table table-bordered">
+  <tr>
+  <td style="color:red;text-align:left;font-size:x-large">{{error}}</td>
+  </tr>
+  <tr>
+	  {% if files %}
+	  {% for file in files[1:] %}
+	  <td style="text-align:left;">{{files[0]}}{{file}}</td>
+	  {% endfor %}
+	  {% endif %}
+	  {% if notifys %}
+	  {% for notif in notifys[1:] %}
+ </tr>
+	  <td style="text-align:left;">{{notifys[0]}}{{notif}}</td>
+	  {% endfor %}
+	  {% endif %}
+	</table>

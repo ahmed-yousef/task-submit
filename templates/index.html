@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Assignment Submit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="{{url_for('static',filename='jquery-3.2.1.min.js')}}"></script>
+<script src="{{url_for('static',filename='bootstrap.min.js')}}"></script>
+<script src="{{url_for('static',filename='script.js')}}"></script>
+<script type="text/javascript">
+$('form').submit(false);
+function submit_it(){
+		console.log("hello there");
+		var formElement = document.querySelector("form");
+		var data = new FormData(formElement);
+		console.log(data);
+		for(var i = 0;i<$( '#file' )[0].files.length;i++){
+        data.append( 'file', $( '#file' )[0].files[i] );
+		}
+		console.log(data);
+		var url="{{url_for('submit')}}";
+		var ajax = new XMLHttpRequest();
+        ajax.upload.addEventListener("progress", progressHandler, false);
+		ajax.addEventListener("error", errorHandler, false);
+		ajax.addEventListener("load", completeHandler, false);
+        ajax.open("POST", url, true);
+        ajax.send(data);
+        function progressHandler(event){
+				console.log('progress')
+				var percent = 100 *(event.loaded / event.total);
+				$('.bar').css('width',percent+'%');
+				console.log(percent);
+    }
+
+
+    function completeHandler(event){ 
+      //alert("completed")
+	  console.log(ajax.status);
+	  if(ajax.status == 200){
+	  $(".table-responsive").html(ajax.response)
+	  }else{
+	  $("#result").html('<h3 style="font-color:red;">Error in server</h6>');
+	  }
+	  delete ajax;
+   }
+   
+   function errorHandler(event){
+	alert("Error in upload.Please Try again");
+   }
+			  
+     }   
+</script>
+</head>
+<body>
+<div id="main"class="container">
+  <h2>Hello, {{user_fb}}</h2><br>
+  <a href="{{url_for('face_auth')}}"><button id="log_fb" class="btn btn-danger">Log To FaceBook <i class="fa fa-facebook-official"></i></button></a>
+  <br><br>
+  <form class="form-horizontal " id="form">
+  <div id="ctrl" class="form-group">
+     <label for="reg_id">Register ID:</label>
+      <div class="col-sm-10 input-group">
+	    <span class="input-group-addon"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
+        <input type="text" class="form-control" id="reg_id" placeholder="Enter register id" name="reg_id" required="required">
+    </div>
+      <div class="col-sm-10 input-group">  
+        <input type="file" class="form-control" id="file" name="file[]" accept='.txt, .doc, .docx' multiple=''>
+      </div>        
+      <div class="col-sm-offset-0 col-sm-10 input-group">
+        <button type="button" id="submit" onclick="submit_it()" class="btn btn-primary ">Submit</button><br><br>
+      </div>
+	  <div id="progress" class="col-sm-offset-0 col-sm-10 input-group" style="height:20px;border:1px black solid;width:75%;">
+    <div class="bar" style="height:100%;background-color:red;width:0%;"></div>
+	</div>
+	</div>
+	<br>
+  </form>
+  <div id="result" class="table-responsive">
+  <table>
+  <tr>
+  <td class="text text-left text-danger">{{err}}</td>
+  </tr>
+  </table>
+</div>
+<p class="text footer">Created by <a href="https://www.facebook.com/Ahmed.Yousef375" >  Ahmed Yousef  <i class="fa fa-facebook-official"></i></a>  using (python, flask, jquery, bootstrap and <a href="http://www.freecodecamp.com"><i class="fa fa-free-code-camp" aria-hidden="true"> freecodecamp.com</i></a>.)
+</p>
+
+</div>
+</body>
+</html>
