@@ -183,7 +183,7 @@ def auth():
       username = session['username']
       flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json',\
       scopes=['https://www.googleapis.com/auth/drive'])
-      flow.redirect_uri = 'http://127.0.0.1:8080/callback'
+      flow.redirect_uri = 'https://assignment-submit.herokuapp.com/callback'
       authorization_url, state = flow.authorization_url(access_type='offline',include_granted_scopes='true',approval_prompt='force')
       return redirect(authorization_url)
     else:
