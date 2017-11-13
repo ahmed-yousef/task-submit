@@ -520,12 +520,11 @@ def face_call():
         print('code is: ',auth_resp['code'],"/n")
         url='https://graph.facebook.com/v2.11/oauth/access_token'
         params={'client_id':'144059996221344',
-       'redirect_uri':'http://127.0.0.1:8080/facecallback',
+       'redirect_uri':'https://assignment-submit.herokuapp.com/facecallback',
        'client_secret':'a73d172ea4132d6c5f5b9a93a6a4866d',
        'code':auth_resp['code']}
         req=requests.get(url,params=params)
         data=json.loads(req.text)
-        print(data)
         print('access token ',data["access_token"],' time ',data["expires_in"],'/n')
         url='https://graph.facebook.com/v2.11/me?fields=name,email&access_token='+data["access_token"]
         req=requests.get(url)
