@@ -418,13 +418,13 @@ def index(m):
                   'Error happened you cancelled log in',
                   'please enter reg id and chose files']
         if 'user_name' in session:
-            return render_template('index.html',err=messages[0],user_fb=session['user_name'])
+            return render_template('index.html',err=messages[0],user_fb=session['user_name'],logged=True)
         elif m==1:
-            return render_template('index.html',err=messages[1],user_fb='User')
+            return render_template('index.html',err=messages[1],user_fb='User',logged=False)
         elif m==2:
-            return render_template('index.html',err=messages[2],user_fb='User')
+            return render_template('index.html',err=messages[2],user_fb='User',logged=False)
         else:
-            return render_template('index.html',err=messages[3],user_fb='First Time, click Log to facebook please.')
+            return render_template('index.html',err=messages[3],user_fb='First Time, click Log to facebook please.',logged=False)
         
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx'])
