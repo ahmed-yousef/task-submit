@@ -172,7 +172,7 @@ def load_client_secret():#discard this function
 
        
 app=Flask(__name__)
-upload = work_path+'\\tmp'
+upload = work_path+'/tmp'
 try:
     os.mkdir(upload)
 except:
@@ -478,7 +478,7 @@ def submit():
                 #return render_template('response.html',error=message)
         
         print(len(files))
-        directory=upload+'\\'+reg_id
+        directory=upload+'/'+reg_id
         files_test=[]
         not_accepted_fils=['file refused: ']
         accepted=['file accepted: ']
