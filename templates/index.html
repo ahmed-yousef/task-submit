@@ -6,20 +6,21 @@
 <link rel="stylesheet" href="{{url_for('static',filename='bootstrap.min.css')}}">
 <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 <script src="{{url_for('static',filename='jquery-3.2.1.min.js')}}"></script>
 <script src="{{url_for('static',filename='bootstrap.min.js')}}"></script>
 <script src="{{url_for('static',filename='script.js')}}"></script>
 <script type="text/javascript">
 $('form').submit(false);
 function submit_it(){
-		//console.log("hello there");
+		console.log("hello there");
 		var formElement = document.querySelector("form");
 		var data = new FormData(formElement);
-		//console.log(data);
+		console.log(data);
 		for(var i = 0;i<$( '#file' )[0].files.length;i++){
         data.append( 'file', $( '#file' )[0].files[i] );
 		}
-		//console.log(data);
+		console.log(data);
 		var url="{{url_for('submit')}}";
 		var ajax = new XMLHttpRequest();
         ajax.upload.addEventListener("progress", progressHandler, false);
@@ -28,16 +29,16 @@ function submit_it(){
         ajax.open("POST", url, true);
         ajax.send(data);
         function progressHandler(event){
-				//console.log('progress')
+				console.log('progress')
 				var percent = 100 *(event.loaded / event.total);
 				$('.bar').css('width',percent+'%');
-				//console.log(percent);
+				console.log(percent);
     }
 
 
     function completeHandler(event){ 
       //alert("completed")
-	 // console.log(ajax.status);
+	  console.log(ajax.status);
 	  if(ajax.status == 200){
 	  $(".table-responsive").html(ajax.response)
 	  }else{
@@ -56,7 +57,7 @@ function submit_it(){
 <body>
 <div id="main"class="container">
   <h2>Hello, {{user_fb}}</h2><br>
-  {% if not logged %}
+  {% if not logged%}
   <a href="{{url_for('face_auth')}}"><button id="log_fb" class="btn btn-danger">Log To FaceBook <i class="fa fa-facebook-official"></i></button></a>
   {% endif %}
   <br><br>
@@ -82,7 +83,7 @@ function submit_it(){
   <div id="result" class="table-responsive">
   <table>
   <tr>
-  <td class="text text-left text-danger">{{err}}</td>
+  <td><h4 class="text text-left text-danger">{{err}}</h4></td>
   </tr>
   </table>
 </div>
