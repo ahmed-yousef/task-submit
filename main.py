@@ -184,6 +184,10 @@ app.secret_key = 'hello_darkness_my_old_friend'
 def fonts(filename):
     return send_from_directory('static/fonts', filename)
 
+@app.route('/googlee646beb1a3814c78.html')
+def google():
+    return render_template('googlee646beb1a3814c78.html')
+
 @app.route('/auth')
 def auth():
     if 'username' in session:
