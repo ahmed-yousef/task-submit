@@ -190,7 +190,7 @@ def auth():
       username = session['username']
       flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json',\
       scopes=['https://www.googleapis.com/auth/drive'])
-      flow.redirect_uri = 'http://127.0.0.1:8080/callback'
+      flow.redirect_uri = 'https://assignment-submit.herokuapp.com/callback'
       authorization_url, state = flow.authorization_url(access_type='offline',include_granted_scopes='true',approval_prompt='force')
       return redirect(authorization_url)
     else:
@@ -542,7 +542,7 @@ def submit():
 
 @app.route('/face')
 def face_auth():
-    url='https://www.facebook.com/v2.11/dialog/oauth?client_id=144059996221344&redirect_uri=http://127.0.0.1:8080/facecallback&auth_type=rerequest&scope=email'
+    url='https://www.facebook.com/v2.11/dialog/oauth?client_id=144059996221344&redirect_uri=https://assignment-submit.herokuapp.com/facecallback&auth_type=rerequest&scope=email'
     return redirect(url)
 
 @app.route('/facecallback')
@@ -552,7 +552,7 @@ def face_call():
         print('code is: ',auth_resp['code'],'/n')
         url='https://graph.facebook.com/v2.11/oauth/access_token'
         params={'client_id':'144059996221344',
-       'redirect_uri':'http://127.0.0.1:8080/facecallback',
+       'redirect_uri':'https://assignment-submit.herokuapp.com/facecallback',
        'client_secret':'a73d172ea4132d6c5f5b9a93a6a4866d',
        'code':auth_resp['code']}
         req=requests.get(url,params=params)
@@ -573,4 +573,4 @@ def face_call():
         return redirect(url_for('index',m=2))
 
 if __name__=='__main__':
-    app.run('127.0.0.1',8080,debug=True)
+    app.run(debug=True)
