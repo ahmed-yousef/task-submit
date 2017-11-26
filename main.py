@@ -443,6 +443,8 @@ def submit():
    if request.method =='POST' and 'user_email' in session:
         reg_id= request.form['reg_id']
         try:
+            if len(reg_id)<4 :
+                raise NameError('False reg id')
             if not (int(reg_id) >=4001 and int(reg_id) <=4549):#setting ranges for register values
                 if not (int(reg_id)>=5001 and int(reg_id) <=5088):
                         if not (int(reg_id)>=71001 and int(reg_id)<=71017):
