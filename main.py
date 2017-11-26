@@ -442,12 +442,16 @@ def submit():
         return render_template('response.html',error=message,files=None,notifys=None) 
    if request.method =='POST' and 'user_email' in session:
         reg_id= request.form['reg_id']
-        if not (int(reg_id) >=4001 and int(reg_id) <=4549):#setting ranges for register values
+        try:
+            if not (int(reg_id) >=4001 and int(reg_id) <=4549):#setting ranges for register values
                 if not (int(reg_id)>=5001 and int(reg_id) <=5088):
                         if not (int(reg_id)>=71001 and int(reg_id)<=71017):
                                 if not (int(reg_id)>=71101 and int(reg_id)<=71103):
                                     message='Wrong Register Id Please Review register'
                                     return render_template('response.html',error=message)
+        except:
+               message='Please enter register id and choose files'
+               return render_template('response.html',error=message)
         files =request.files.getlist('file[]')
         name=session['user_name']
         email=session['user_email']
