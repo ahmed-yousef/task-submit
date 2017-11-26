@@ -19,7 +19,7 @@ function submit_it(){
         data.append( 'file', $( '#file' )[0].files[i] );
 		}
 		//console.log(data);
-		var url="{{url_for('submit')}}";
+		var url="/submit";
 		var ajax = new XMLHttpRequest();
         ajax.upload.addEventListener("progress", progressHandler, false);
 		ajax.addEventListener("error", errorHandler, false);
