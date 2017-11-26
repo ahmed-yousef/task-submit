@@ -13,21 +13,25 @@
 <script type="text/javascript">
 $('form').submit(false);
 function submit_it(){
-		console.log("hello there");
+		//console.log("hello there");
 		var formElement = document.querySelector("form");
 		var data = new FormData(formElement);
-		console.log(data);
+		//console.log(data);
 		for(var i = 0;i<$( '#file' )[0].files.length;i++){
         data.append( 'file', $( '#file' )[0].files[i] );
 		}
-		console.log(data);
+		//console.log(data);
 		var url="{{url_for('submit')}}";
 		var ajax = new XMLHttpRequest();
         ajax.upload.addEventListener("progress", progressHandler, false);
 		ajax.addEventListener("error", errorHandler, false);
 		ajax.addEventListener("load", completeHandler, false);
-        ajax.open("POST", url, true);
+	if(data.getAll("reg_id")[0].length>4){
+	ajax.open("POST", url, true);
         ajax.send(data);
+	}else{
+	$("#result").html('<h3 style="color:red;">Wrong Register Number</h6>');
+	}
         function progressHandler(event){
 				console.log('progress')
 				var percent = 100 *(event.loaded / event.total);
