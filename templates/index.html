@@ -26,11 +26,18 @@ function submit_it(){
         ajax.upload.addEventListener("progress", progressHandler, false);
 		ajax.addEventListener("error", errorHandler, false);
 		ajax.addEventListener("load", completeHandler, false);
-	if(data.getAll("reg_id")[0].length>4){
+	var reg_id=parseInt(data.getAll("reg_id")[0]);
+	if (! (reg_id >=4001 && reg_id <=4549)){
+                if (! (reg_id>=5001 && reg_id <=5088)){
+                        if (! (reg_id>=71001 && reg_id<=71017)){
+                                if (! (reg_id>=71101 && reg_id<=71103)){
+				$("#result").html('<h3 style="color:red;">Wrong Register Number</h6>');
+                                }
+		}
+	}
+}else{
 	ajax.open("POST", url, true);
         ajax.send(data);
-	}else{
-	$("#result").html('<h3 style="color:red;">Wrong Register Number</h6>');
 	}
         function progressHandler(event){
 				console.log('progress')
