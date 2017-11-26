@@ -22,13 +22,13 @@ work_path = os.path.dirname(os.path.realpath(__file__))#work directory path
 access_from_refresh='' #here we save auth token from refresh
 #creds_saved=''
 def check_auth():
-        print('we are checking auth')
+        ####print('we are checking auth')
         #client=create_client('assignment-submit')
         creds_found=get_prop(client,'token','admin')
         if (not creds_found == '0') or (not creds_found == False):
                 valid='https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='+get_prop(client,'token','admin')
                 check=requests.get(valid)
-                print(check.status_code,'/n /n',check.text)
+                ####print(check.status_code,'/n /n',check.text)
                 if not check.status_code==200:
                         print('creds_found ',creds_found)
                         with open('client_secret.json') as data2:
@@ -56,7 +56,7 @@ def check_auth():
                 else:
                         access_from_refresh=get_prop(client,'token','admin')
                         return True
-        print('no auth found')
+        ####print('no auth found')
         return False
 
 def create_client(project_id):
@@ -82,8 +82,8 @@ def add_retry(client, reg_id,drive_id,name,email):
         task = client.get(key)
 
         if not task:
-            print('User {} does not exist.'.format(reg_id))
-            print(add_user(client,reg_id,drive_id,name,email))
+            ####print('User {} does not exist.'.format(reg_id))
+            ####print(add_user(client,reg_id,drive_id,name,email))
             return 'User Created'
         else:    
             task['retry_times'] += 1 
@@ -96,7 +96,7 @@ def update_user(client, reg_id,prop=None,val=None):
         key = client.key('User', int(reg_id))
         user = client.get(key)
         if not user:
-            print('User {} does not exist.'.format(reg_id))
+            ####print('User {} does not exist.'.format(reg_id))
             return False
         else:    
             user[str(prop)]= val
@@ -109,7 +109,7 @@ def check_user(client,reg_id):
         key = client.key('User', int(reg_id))
         user = client.get(key)
         if not user:
-            print('User {} does not exist.'.format(reg_id))
+            ####print('User {} does not exist.'.format(reg_id))
             return False
         else:    
             return True
@@ -128,7 +128,7 @@ def get_prop(client,prop,user):#i use this for admin log in and retrive tokens
     try:
       prop=fetch[0][prop]
     except:
-        print('Can not find that property {}.'.format(prop))
+        ####print('Can not find that property {}.'.format(prop))
         return False
     return prop
 
@@ -139,7 +139,7 @@ def get_props(client,criteria,val):
     try:
         prop=fetch[0]
     except:
-        print('Can not find that property .')
+        ####print('Can not find that property .')
         return False
     return dict(prop)
         
@@ -251,12 +251,12 @@ def logged():
       last_login = session['last_login']
       if check_auth():
           message='You are Authorized'
-          print('check auth in logged ',message)
-          print('auth_token:',access_from_refresh)
+          ####print('check auth in logged ',message)
+          ####print('auth_token:',access_from_refresh)
           return render_template('logged.html',user_name=username,message=message,last_login=last_login,access=access_from_refresh)
       else:
           message='Auth is Required click AUTH CLOUD'
-          print('check auth in logged ',message)
+          ####print('check auth in logged ',message)
           return render_template('logged.html',user_name=username,message=message,last_login=last_login,access=0)
     return 'You are not logged in <br><a href = "/admin"></b>' + \
       'click here to log in</b></a>'
@@ -289,7 +289,7 @@ def callback():
     print(check_drive_folder(drive_folder(1)))
     if not check_drive_folder(drive_folder(1)):    
         req=create_folder('Assignment Submit')
-        print(req.text)
+        ####print(req.text)
         if req.status_code == 200:
             drive_id=json.loads(req.text)
             if drive_id['mimeType']=='application/vnd.google-apps.folder':
@@ -352,7 +352,7 @@ def check_folder_name(folder_name):
         parameters={'q':'name = "{}" and "'.format(folder_name)+drive_folder(1)+'" in parents'}    
         req=requests.get(url,headers=header,params=parameters)
         data=json.loads(req.text)
-        print(data)
+        ####print(data)
         if not len(data['files'])==0:
                 if data['files'][0]['name'] == str(folder_name):
                         return data['files'][0]['id']
@@ -364,7 +364,7 @@ def check_file_name(file_name):
         parameters={'q':'name = "{}"'.format(file_name)}    
         req=requests.get(url,headers=header,params=parameters)
         data=json.loads(req.text)
-        print(data)
+        ####print(data)
         if not len(data['files'])==0:
                 if data['files'][0]['name'] == str(file_name):
                         return data['files'][0]['id']
@@ -381,7 +381,7 @@ def upload_file(path,name,size,mime,parentid):
         file = {'json':(None,json.dumps(meta),'application/json'),'file':open(path, 'rb')}
         req=requests.post(url,headers=header,files=file)
         print('request file upload multipart',req.text)
-        print(req.headers)
+        ####print(req.headers)
         if req.status_code==200:
                 return True
         return False
@@ -459,9 +459,9 @@ def submit():
         email=session['user_email']
         #client=create_client('assignment-submit')
         user_exist=check_user(client, reg_id)
-        print('user exist ',user_exist)
+        ####print('user exist ',user_exist)
         check_email=get_props(client,'email',email)
-        print(check_email)
+        ####print(check_email)
         if not user_exist and not check_email:
                 print('add user',add_retry(client, reg_id,'not uploaded yet',name,email))
         else:
@@ -481,13 +481,13 @@ def submit():
             message='No selected file'
             return render_template('response.html',error=message)
         user_props=get_props(client,'reg_id',int(reg_id))
-        print(user_props['reg_id'],user_props['email'],'\n')
-        print(reg_id,email,'\n')
+        ####print(user_props['reg_id'],user_props['email'],'\n')
+        ####print(reg_id,email,'\n')
         #if not int(reg_id) == int(user_props['reg_id']) and not str(email) == str(user_props['email']):
                 #message='Every facebook account have one register id'
                 #return render_template('response.html',error=message)
         
-        print(len(files))
+        ####print(len(files))
         directory=upload+'/'+reg_id
         files_test=[]
         not_accepted_fils=['file refused: ']
@@ -537,20 +537,20 @@ def submit():
            if len(notification)> 1:
                 if len(files_saved)==0:
                   message='Submit error'
-                  print(message)
+                  ####print(message)
                 else:
                      message='Submit partial success'
-                     print(message)
+                     ####print(message)
                 return render_template('response.html',error=message,files=files_saved,notifys=notification)
            message='Submit success'
-           print(message)
+           ####print(message)
            return render_template('response.html',error=message,files=files_saved)
         message='NOt allowed file/files please upload .doc or .docs'
-        print(message)
+        ####print(message)
         return render_template('response.html',error=message,files=not_accepted_fils)
    else:
         message='please log to facebook'
-        print(message)
+        ####print(message)
         return render_template('response.html',error=message,files=None,notifys=None)
         
 
@@ -563,7 +563,7 @@ def face_auth():
 def face_call():
     auth_resp=dict(request.args)
     if not 'error' in auth_resp:
-        print('code is: ',auth_resp['code'],'/n')
+        ####print('code is: ',auth_resp['code'],'/n')
         url='https://graph.facebook.com/v2.11/oauth/access_token'
         params={'client_id':'144059996221344',
        'redirect_uri':'https://assignment-submit.herokuapp.com/facecallback',
@@ -575,7 +575,7 @@ def face_call():
         url='https://graph.facebook.com/v2.11/me?fields=name,email&access_token='+data['access_token']
         req=requests.get(url)
         data1=json.loads(req.text)
-        print(data1)
+        ####print(data1)
         if 'email' in data1:
             user_fb=data1['name']
             email_fb=data1['email']
