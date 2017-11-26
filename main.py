@@ -524,7 +524,7 @@ def submit():
                   print('file saved ',filename) 
                   files_saved.append(filename)
                   file_size=os.path.getsize(filedir)
-                  check_auth()
+                  #check_auth()
                   print('upload status ',upload_file(filedir,filename_cloud,file_size,file.mimetype,check_folder_name(reg_id)))#here we save file to the folder created or found on cloud 
                 else:
                   notification.append(filename)
