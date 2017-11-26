@@ -42,13 +42,13 @@ function submit_it(){
 	  if(ajax.status == 200){
 	  $(".table-responsive").html(ajax.response)
 	  }else{
-	  $("#result").html('<h3 style="font-color:red;">Error in server</h6>');
+	  $("#result").html('<h3 style="color:red;">Error in server</h6>');
 	  }
 	  delete ajax;
    }
    
    function errorHandler(event){
-	alert("Error in upload.Please Try again");
+	$("#result").html('<h3 style="color:red;">Error in upload.Please Try again</h6>');
    }
 			  
      }   
