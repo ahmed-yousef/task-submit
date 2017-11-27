@@ -587,4 +587,4 @@ def face_call():
         return redirect(url_for('index',m=2))
 
 if __name__=='__main__':
-    app.run(debug=True)
+    app.run(threaded=True)
